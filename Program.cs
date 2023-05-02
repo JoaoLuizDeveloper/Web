@@ -6,8 +6,7 @@ var conexaoSQLServer = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddNHibernate(conexaoSQLServer);
 builder.Services.AddControllersWithViews();
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 

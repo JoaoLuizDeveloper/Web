@@ -1,11 +1,12 @@
 ﻿using Web.Models;
 using NHibernate;
+using Microsoft.AspNetCore.Http;
 
 namespace Web.Repositories
 {
     public class ProdutoRepository : IRepository<Produtos>
     {
-        private NHibernate.ISession _session;
+        private readonly NHibernate.ISession _session;
 
         public ProdutoRepository(NHibernate.ISession session) => _session = session;
         
@@ -14,7 +15,8 @@ namespace Web.Repositories
             ITransaction transaction = _session.BeginTransaction();
             try
             {
-                await _session.SaveAsync(obj);
+                transaction = _session.BeginTransaction();
+                await _session.SaveOrUpdateAsync(obj);
                 await transaction.CommitAsync();
             }
             catch (Exception ex)
